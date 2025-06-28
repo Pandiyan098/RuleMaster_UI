@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,6 +22,8 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export default function ProfilePage() {
+  const { theme, setTheme } = useTheme();
+
   return (
     <div className="grid gap-6">
       <Card>
@@ -70,7 +73,11 @@ export default function ProfilePage() {
             </div>
             <div className="grid gap-2">
               <Label>Theme</Label>
-              <RadioGroup defaultValue="light" className="flex items-center gap-4">
+              <RadioGroup
+                value={theme}
+                onValueChange={setTheme}
+                className="flex items-center gap-4"
+              >
                 <Label htmlFor="theme-light" className="flex items-center gap-2 cursor-pointer">
                   <RadioGroupItem value="light" id="theme-light" />
                   Light
@@ -78,6 +85,10 @@ export default function ProfilePage() {
                 <Label htmlFor="theme-dark" className="flex items-center gap-2 cursor-pointer">
                   <RadioGroupItem value="dark" id="theme-dark" />
                   Dark
+                </Label>
+                <Label htmlFor="theme-system" className="flex items-center gap-2 cursor-pointer">
+                    <RadioGroupItem value="system" id="theme-system" />
+                    System
                 </Label>
               </RadioGroup>
             </div>
