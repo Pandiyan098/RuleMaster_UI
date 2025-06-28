@@ -31,10 +31,10 @@ export function LandingHeader() {
           
           <div className="hidden md:flex items-center gap-4">
             <Button variant="ghost" asChild>
-              <Link href="#">Sign In</Link>
+              <Link href="/login">Sign In</Link>
             </Button>
             <Button asChild>
-              <Link href="/dashboard">Try for Free</Link>
+              <Link href="/signup">Sign Up</Link>
             </Button>
           </div>
 
@@ -62,10 +62,10 @@ export function LandingHeader() {
                   </nav>
                   <div className="flex flex-col gap-4 mt-4">
                      <Button variant="outline" asChild>
-                        <Link href="#">Sign In</Link>
+                        <Link href="/login">Sign In</Link>
                     </Button>
                     <Button asChild>
-                        <Link href="/dashboard">Try for Free</Link>
+                        <Link href="/signup">Sign Up</Link>
                     </Button>
                   </div>
                 </div>

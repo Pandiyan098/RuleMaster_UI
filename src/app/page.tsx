@@ -47,10 +47,10 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="font-bold">
-                <Link href="/dashboard">Try for Free <ChevronRight className="ml-2 h-5 w-5" /></Link>
+                <Link href="/signup">Try for Free <ChevronRight className="ml-2 h-5 w-5" /></Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="font-bold">
-                <Link href="#">Sign In</Link>
+                <Link href="/login">Sign In</Link>
               </Button>
             </div>
           </div>
