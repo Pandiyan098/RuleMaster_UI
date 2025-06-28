@@ -6,7 +6,8 @@ import {
   Package2,
   Settings,
   PlusCircle,
-  BrainCircuit
+  BrainCircuit,
+  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -106,7 +107,12 @@ export function DashboardHeader() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/profile">
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Logout</DropdownMenuItem>

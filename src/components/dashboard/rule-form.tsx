@@ -4,7 +4,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { ruleSchema } from "@/lib/schemas";
 import { clarifyRule, createRuleAction } from "@/lib/actions";
@@ -23,17 +23,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Bot, ThumbsUp, PartyPopper } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AuthDialog } from "./auth-dialog";
 
 type RuleFormValues = z.infer<typeof ruleSchema>;
 
-function SubmitButton({ label, loadingLabel }: { label: string, loadingLabel: string }) {
+function ClarifyButton() {
   const { pending } = useFormStatus();
-  return <Button type="submit" disabled={pending}>{pending ? loadingLabel : label}</Button>;
+  return <Button type="submit" disabled={pending}>{pending ? "Clarifying..." : "Clarify with AI"}</Button>;
 }
 
 export function RuleForm() {
   const { toast } = useToast();
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
   const form = useForm<RuleFormValues>({
     resolver: zodResolver(ruleSchema),
     defaultValues: {
@@ -41,7 +45,10 @@ export function RuleForm() {
       description: "",
       ruleDefinition: "",
       clarifiedRule: "",
+      username: "",
+      password: "",
     },
+    mode: "onChange",
   });
 
   const [clarifyState, clarifyFormAction] = useFormState(clarifyRule, {
@@ -71,7 +78,7 @@ export function RuleForm() {
       if(createState.issues) {
          toast({
           variant: 'destructive',
-          title: 'Error creating rule',
+          title: 'Error Creating Rule',
           description: createState.issues.join(', '),
         });
       } else {
@@ -86,6 +93,31 @@ export function RuleForm() {
     form.setValue("ruleDefinition", clarifyState.clarifiedRule);
     form.setValue("clarifiedRule", "");
   };
+  
+  const handleSaveClick = () => {
+    form.trigger().then((isValid) => {
+        if (isValid) {
+            setIsAuthDialogOpen(true);
+        } else {
+             toast({
+                variant: 'destructive',
+                title: 'Invalid Form',
+                description: "Please correct the errors before saving.",
+             });
+        }
+    });
+  }
+
+  const handleConfirmSave = (username?: string, password?: string) => {
+    if (username && password) {
+        form.setValue("username", username);
+        form.setValue("password", password);
+        // Timeout to allow state to update before submitting
+        setTimeout(() => {
+            formRef.current?.requestSubmit();
+        }, 100);
+    }
+  }
 
   if (showSuccess) {
     return (
@@ -100,79 +132,98 @@ export function RuleForm() {
   }
 
   return (
-    <Form {...form}>
-      <form action={createFormAction} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Rule Name</FormLabel>
-              <FormControl>
-                <Input placeholder="e.g., Commission Bonus" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Input placeholder="A short description of what this rule does" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="ruleDefinition"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Rule Definition</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder='e.g., "If sales by John are greater than 10 units, then give him a 5% bonus"'
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
+    <>
+      <AuthDialog
+        open={isAuthDialogOpen}
+        onOpenChange={setIsAuthDialogOpen}
+        onConfirm={handleConfirmSave}
+        title="Confirm Save"
+        description="Please enter your credentials to save this rule."
+      />
+      <Form {...form}>
+        <form ref={formRef} action={createFormAction} className="space-y-8">
+          <FormField
             control={form.control}
-            name="clarifiedRule"
-            render={({ field }) => <input type="hidden" {...field} />}
-        />
-        
-        {clarifyState.clarifiedRule && (
-          <Alert>
-            <Bot className="h-4 w-4" />
-            <AlertTitle>AI Clarification</AlertTitle>
-            <AlertDescription>
-              <p className="mb-4">{clarifyState.clarifiedRule}</p>
-              <Button type="button" size="sm" onClick={handleAcceptClarification}>
-                <ThumbsUp className="mr-2 h-4 w-4" /> Accept Suggestion
-              </Button>
-            </AlertDescription>
-          </Alert>
-        )}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Rule Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g., Commission Bonus" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="A short description of what this rule does" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="ruleDefinition"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Rule Definition</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder='e.g., "If sales by John are greater than 10 units, then give him a 5% bonus"'
+                    className="resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+              control={form.control}
+              name="clarifiedRule"
+              render={({ field }) => <input type="hidden" {...field} />}
+          />
+          <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => <input type="hidden" {...field} />}
+          />
+          <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => <input type="hidden" {...field} />}
+          />
+          
+          {clarifyState.clarifiedRule && (
+            <Alert>
+              <Bot className="h-4 w-4" />
+              <AlertTitle>AI Clarification</AlertTitle>
+              <AlertDescription>
+                <p className="mb-4">{clarifyState.clarifiedRule}</p>
+                <Button type="button" size="sm" onClick={handleAcceptClarification}>
+                  <ThumbsUp className="mr-2 h-4 w-4" /> Accept Suggestion
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
 
-        <div className="flex justify-between items-center">
-            <form action={clarifyFormAction}>
-                <input type="hidden" name="ruleDefinition" value={form.watch('ruleDefinition')} />
-                <SubmitButton label="Clarify with AI" loadingLabel="Clarifying..." />
-            </form>
-            <SubmitButton label="Save Rule" loadingLabel="Saving..." />
-        </div>
+          <div className="flex justify-between items-center">
+              <form action={clarifyFormAction}>
+                  <input type="hidden" name="ruleDefinition" value={form.watch('ruleDefinition')} />
+                  <ClarifyButton />
+              </form>
+              <Button type="button" onClick={handleSaveClick}>Save Rule</Button>
+          </div>
 
-      </form>
-    </Form>
+        </form>
+      </Form>
+    </>
   );
 }
