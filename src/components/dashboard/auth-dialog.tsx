@@ -31,6 +31,10 @@ export function AuthDialog({ open, onOpenChange, onConfirm, title, description }
     // In a real app, this would be a proper authentication call.
     // For this prototype, we'll use a simple hardcoded check.
     if (username === "admin" && password === "password") {
+      toast({
+        title: "Login Successful",
+        description: "You have been successfully authenticated.",
+      });
       onConfirm(username, password);
       onOpenChange(false);
       setUsername("");
