@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   Bot,
   Menu,
@@ -19,9 +20,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { ProfileSheet } from "./profile-sheet";
 
 export function DashboardHeader() {
   const router = useRouter();
+  const [isProfileSheetOpen, setProfileSheetOpen] = useState(false);
 
   const handleLogout = () => {
     router.push('/login');
@@ -34,36 +37,36 @@ export function DashboardHeader() {
           href="/dashboard"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
-          <Bot className="h-6 w-6 text-accent" />
+          <Bot className="h-6 w-6 text-accent-foreground" />
           <span className="sr-only">RuleMaster AI</span>
         </Link>
         <Link
           href="/dashboard"
-          className="text-foreground transition-colors hover:text-foreground"
+          className="text-foreground transition-colors hover:text-foreground/80"
         >
           Rules
         </Link>
         <Link
           href="/dashboard/execute"
-          className="text-muted-foreground transition-colors hover:text-foreground"
+          className="text-muted-foreground transition-colors hover:text-foreground/80"
         >
           Execute
         </Link>
         <Link
           href="#"
-          className="text-muted-foreground transition-colors hover:text-foreground"
+          className="text-muted-foreground transition-colors hover:text-foreground/80"
         >
           Recently Added Rules
         </Link>
         <Link
           href="#"
-          className="text-muted-foreground transition-colors hover:text-foreground"
+          className="text-muted-foreground transition-colors hover:text-foreground/80"
         >
           Last 10 Prompts
         </Link>
         <Link
           href="/dashboard/analytics"
-          className="text-muted-foreground transition-colors hover:text-foreground"
+          className="text-muted-foreground transition-colors hover:text-foreground/80"
         >
           Analytics
         </Link>
@@ -81,7 +84,7 @@ export function DashboardHeader() {
               href="/dashboard"
               className="flex items-center gap-2 text-lg font-semibold"
             >
-              <Bot className="h-6 w-6 text-accent" />
+              <Bot className="h-6 w-6 text-accent-foreground" />
               <span className="sr-only">RuleMaster AI</span>
             </Link>
             <Link href="/dashboard" className="hover:text-foreground">
@@ -140,11 +143,9 @@ export function DashboardHeader() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard/profile">
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </Link>
+            <DropdownMenuItem onSelect={() => setProfileSheetOpen(true)}>
+              <User className="mr-2 h-4 w-4" />
+              <span>Profile</span>
             </DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -152,6 +153,7 @@ export function DashboardHeader() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <ProfileSheet open={isProfileSheetOpen} onOpenChange={setProfileSheetOpen} />
     </header>
   );
 }
