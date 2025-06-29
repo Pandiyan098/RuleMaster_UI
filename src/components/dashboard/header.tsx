@@ -62,7 +62,7 @@ export function DashboardHeader() {
           Last 10 Prompts
         </Link>
         <Link
-          href="#"
+          href="/dashboard/analytics"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Analytics
@@ -106,7 +106,7 @@ export function DashboardHeader() {
               Last 10 Prompts
             </Link>
             <Link
-              href="#"
+              href="/dashboard/analytics"
               className="text-muted-foreground hover:text-foreground"
             >
               Analytics
