@@ -5,7 +5,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import Link from 'next/link';
 import { Bot, BookOpenCheck, Rocket, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 const features = [
   {
@@ -96,7 +95,7 @@ export default function Home() {
                         <TableCell className="hidden sm:table-cell text-muted-foreground">{rule.trigger}</TableCell>
                         <TableCell className="hidden md:table-cell text-muted-foreground">{rule.action}</TableCell>
                         <TableCell>
-                          <Badge variant={rule.status === 'active' ? 'default' : 'secondary'} className={cn(rule.status === 'active' ? 'bg-green-500/20 text-green-700' : 'bg-gray-500/20 text-gray-700', 'border-none')}>
+                           <Badge variant={rule.status === 'active' ? 'default' : 'secondary'}>
                             {rule.status}
                           </Badge>
                         </TableCell>

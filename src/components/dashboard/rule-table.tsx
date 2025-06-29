@@ -26,7 +26,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 
 interface RuleTableProps {
   title: string;
@@ -63,12 +62,6 @@ export function RuleTable({ title, description, rules, onEdit, onToggleStatus, o
                 <TableCell>
                   <Badge
                     variant={rule.status === "active" ? "default" : "secondary"}
-                    className={cn(
-                      "border-transparent",
-                      rule.status === "active"
-                        ? "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300"
-                        : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"
-                    )}
                   >
                     {rule.status}
                   </Badge>
