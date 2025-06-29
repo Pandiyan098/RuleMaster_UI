@@ -115,7 +115,11 @@ export function DashboardHeader() {
         </SheetContent>
       </Sheet>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <div className="ml-auto flex-1 sm:flex-initial">
+        <div className="ml-auto flex items-center gap-2">
+          <Button variant="outline">
+            <Bot className="mr-2 h-4 w-4" />
+            AI
+          </Button>
           <Button asChild>
             <Link href="/dashboard/rules/new">
               <PlusCircle className="mr-2 h-4 w-4" />
