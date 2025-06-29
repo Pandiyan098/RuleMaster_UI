@@ -12,13 +12,14 @@ import { Bot } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [tenantName, setTenantName] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Simulate a successful login for prototype
-    console.log('Logging in with:', { email, password });
+    console.log('Logging in with:', { tenantName, username, password });
     toast({
       title: 'Login Successful',
       description: 'Welcome back! Redirecting to dashboard...',
@@ -49,14 +50,26 @@ export default function LoginPage() {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="tenant-name">Tenant Name</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
+                id="tenant-name"
+                type="text"
+                placeholder="Your company name"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={tenantName}
+                onChange={(e) => setTenantName(e.target.value)}
+                className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                type="text"
+                placeholder="your_username"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
               />
             </div>

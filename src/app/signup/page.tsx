@@ -12,13 +12,16 @@ import { Bot } from 'lucide-react';
 
 export default function SignupPage() {
   const router = useRouter();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
     // Simulate a successful signup for prototype
-    console.log('Signing up with:', { email, password });
+    console.log('Signing up with:', { firstName, lastName, username, email, password });
     toast({
       title: 'Account Created',
       description: 'You can now log in with your new account.',
@@ -41,6 +44,38 @@ export default function SignupPage() {
             </CardHeader>
             <CardContent>
             <form onSubmit={handleSignup} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="first-name">First Name</Label>
+                        <Input
+                            id="first-name"
+                            required
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="last-name">Last Name</Label>
+                        <Input
+                            id="last-name"
+                            required
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
+                        />
+                    </div>
+                </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="username">Username</Label>
+                    <Input
+                        id="username"
+                        required
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
+                    />
+                </div>
                 <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
