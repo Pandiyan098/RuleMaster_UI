@@ -7,8 +7,8 @@ export function LandingHeader() {
   const navLinks = [
     { href: '#features', label: 'Features' },
     { href: '#rules-preview', label: 'Preview' },
-    { href: '#', label: 'Pricing' },
-    { href: '#', label: 'Contact' },
+    { href: '#pricing', label: 'Pricing' },
+    { href: '#contact', label: 'Contact' },
   ];
 
   return (
