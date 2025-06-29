@@ -3,7 +3,6 @@
 import { clarifyAmbiguousRule } from '@/ai/flows/clarify-ambiguous-rules';
 import { ruleSchema } from '@/lib/schemas';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 export async function clarifyRule(
   prevState: { clarifiedRule: string; error: string | null },
@@ -44,17 +43,8 @@ export async function createRuleAction(
         }
     }
 
-    // In a real app, this would be a proper authentication check against a database.
-    if (parsed.data.username !== 'admin' || parsed.data.password !== 'password') {
-        return {
-            message: "Authentication failed.",
-            issues: ["Invalid username or password."],
-            fields: data as Record<string, string>,
-        }
-    }
-
-    // In a real app, you would save `parsed.data` (excluding password) to a database here.
-    const { password, ...ruleData } = parsed.data;
+    // In a real app, you would save `parsed.data` to a database here.
+    const ruleData = parsed.data;
     console.log("Rule created successfully:", ruleData);
 
     revalidatePath('/dashboard');

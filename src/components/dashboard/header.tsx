@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useKeycloak } from "@react-keycloak/web";
 import {
   Bot,
   Home,
@@ -26,10 +27,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export function DashboardHeader() {
   const router = useRouter();
+  const { keycloak } = useKeycloak();
 
   const handleLogout = () => {
-    // In a real app, you'd also clear auth tokens, etc.
-    router.push('/');
+    if (keycloak) {
+      keycloak.logout();
+    }
   };
 
   return (
@@ -108,7 +111,7 @@ export function DashboardHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
               <Avatar>
-                <AvatarImage src="https://placehold.co/40x40.png" alt="@user" />
+                <AvatarImage src="https://placehold.co/40x40.png" alt="@user" data-ai-hint="profile avatar"/>
                 <AvatarFallback>RM</AvatarFallback>
               </Avatar>
               <span className="sr-only">Toggle user menu</span>

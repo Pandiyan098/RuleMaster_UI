@@ -23,7 +23,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Bot, ThumbsUp, PartyPopper } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { AuthDialog } from "./auth-dialog";
 
 type RuleFormValues = z.infer<typeof ruleSchema>;
 
@@ -35,7 +34,6 @@ function ClarifyButton() {
 export function RuleForm() {
   const { toast } = useToast();
   const [showSuccess, setShowSuccess] = useState(false);
-  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   const form = useForm<RuleFormValues>({
@@ -45,8 +43,6 @@ export function RuleForm() {
       description: "",
       ruleDefinition: "",
       clarifiedRule: "",
-      username: "",
-      password: "",
     },
     mode: "onChange",
   });
@@ -97,7 +93,7 @@ export function RuleForm() {
   const handleSaveClick = () => {
     form.trigger().then((isValid) => {
         if (isValid) {
-            setIsAuthDialogOpen(true);
+            formRef.current?.requestSubmit();
         } else {
              toast({
                 variant: 'destructive',
@@ -106,17 +102,6 @@ export function RuleForm() {
              });
         }
     });
-  }
-
-  const handleConfirmSave = (username?: string, password?: string) => {
-    if (username && password) {
-        form.setValue("username", username);
-        form.setValue("password", password);
-        // Timeout to allow state to update before submitting
-        setTimeout(() => {
-            formRef.current?.requestSubmit();
-        }, 100);
-    }
   }
 
   if (showSuccess) {
@@ -133,13 +118,6 @@ export function RuleForm() {
 
   return (
     <>
-      <AuthDialog
-        open={isAuthDialogOpen}
-        onOpenChange={setIsAuthDialogOpen}
-        onConfirm={handleConfirmSave}
-        title="Confirm Save"
-        description="Please enter your credentials to save this rule."
-      />
       <Form {...form}>
         <form ref={formRef} action={createFormAction} className="space-y-8">
           <FormField
@@ -188,16 +166,6 @@ export function RuleForm() {
           <FormField
               control={form.control}
               name="clarifiedRule"
-              render={({ field }) => <input type="hidden" {...field} />}
-          />
-          <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => <input type="hidden" {...field} />}
-          />
-          <FormField
-              control={form.control}
-              name="password"
               render={({ field }) => <input type="hidden" {...field} />}
           />
           

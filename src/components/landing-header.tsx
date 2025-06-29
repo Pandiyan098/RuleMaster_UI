@@ -34,7 +34,7 @@ export function LandingHeader() {
               <Link href="/login">Sign In</Link>
             </Button>
             <Button asChild>
-              <Link href="/signup">Sign Up</Link>
+              <Link href="/login">Sign Up</Link>
             </Button>
           </div>
 
@@ -65,7 +65,7 @@ export function LandingHeader() {
                         <Link href="/login">Sign In</Link>
                     </Button>
                     <Button asChild>
-                        <Link href="/signup">Sign Up</Link>
+                        <Link href="/login">Sign Up</Link>
                     </Button>
                   </div>
                 </div>

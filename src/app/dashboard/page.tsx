@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import type { Rule } from "@/lib/definitions";
-import { AuthDialog } from "@/components/dashboard/auth-dialog";
 import { useToast } from "@/hooks/use-toast";
 
 const initialRules: Rule[] = [
@@ -42,61 +41,31 @@ const initialRules: Rule[] = [
 export default function DashboardPage() {
   const { toast } = useToast();
   const [rules, setRules] = useState<Rule[]>(initialRules);
-  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
-  const [pendingAction, setPendingAction] = useState<{ action: () => void, title: string, description: string } | null>(null);
-
-  const handleActionClick = (action: () => void, title: string, description: string) => {
-    setPendingAction({ action, title, description });
-    setIsAuthDialogOpen(true);
-  };
-  
-  const handleConfirmAction = () => {
-    if (pendingAction) {
-      pendingAction.action();
-      setPendingAction(null);
-    }
-  };
 
   const handleToggleStatus = (ruleId: string) => {
-    const action = () => {
-      setRules(prevRules =>
-        prevRules.map(rule =>
-          rule.id === ruleId
-            ? { ...rule, status: rule.status === 'active' ? 'inactive' : 'active' }
-            : rule
-        )
-      );
-      toast({ title: "Success", description: "Rule status updated." });
-    };
-    handleActionClick(action, "Confirm Action", "Please enter your credentials to change the rule status.");
+    setRules(prevRules =>
+      prevRules.map(rule =>
+        rule.id === ruleId
+          ? { ...rule, status: rule.status === 'active' ? 'inactive' : 'active' }
+          : rule
+      )
+    );
+    toast({ title: "Success", description: "Rule status updated." });
   };
 
   const handleDelete = (ruleId: string) => {
-    const action = () => {
-      setRules(prevRules => prevRules.filter(rule => rule.id !== ruleId));
-      toast({ title: "Success", description: "Rule deleted." });
-    };
-    handleActionClick(action, "Confirm Deletion", "Please enter your credentials to delete this rule.");
+    setRules(prevRules => prevRules.filter(rule => rule.id !== ruleId));
+    toast({ title: "Success", description: "Rule deleted." });
   };
   
   const handleEdit = (ruleId: string) => {
-     const action = () => {
-      // In a real app, this would navigate to an edit page.
-      // For now, we'll just show a toast.
-      toast({ title: "Edit Action", description: `Authenticated to edit rule ${ruleId}`});
-    };
-    handleActionClick(action, "Confirm Edit", "Please enter your credentials to edit this rule.");
+     // In a real app, this would navigate to an edit page.
+     // For now, we'll just show a toast.
+     toast({ title: "Edit Action", description: `Proceeding to edit rule ${ruleId}`});
   }
 
   return (
     <>
-      <AuthDialog
-        open={isAuthDialogOpen}
-        onOpenChange={setIsAuthDialogOpen}
-        onConfirm={handleConfirmAction}
-        title={pendingAction?.title || "Confirm Action"}
-        description={pendingAction?.description || "Please enter your credentials to proceed."}
-      />
       <Card>
         <CardHeader>
           <CardTitle>Business Rules</CardTitle>
