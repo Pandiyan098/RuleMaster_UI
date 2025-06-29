@@ -21,12 +21,18 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ProfileSheet } from "./profile-sheet";
+import { useToast } from "@/hooks/use-toast";
 
 export function DashboardHeader() {
   const router = useRouter();
+  const { toast } = useToast();
   const [isProfileSheetOpen, setProfileSheetOpen] = useState(false);
 
   const handleLogout = () => {
+    toast({
+      title: "Logout Successful",
+      description: "You have been successfully logged out.",
+    });
     router.push('/login');
   };
 
