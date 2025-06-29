@@ -1,7 +1,6 @@
-import type {NextConfig} from 'next';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -18,6 +17,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // 👇 Add this section to allow cross-origin in dev
+  allowedDevOrigins: [
+    'http://localhost:5173',
+    'https://5173-firebase-studio-1751109979693.cluster-ikxjzjhlifcwuroomfkjrx437g.cloudworkstations.dev',
+  ],
 };
 
 export default nextConfig;
