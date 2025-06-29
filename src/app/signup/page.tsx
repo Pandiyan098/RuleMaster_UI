@@ -43,7 +43,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-300 to-purple-400 dark:from-indigo-950 dark:to-purple-950 py-12">
+    <div className="flex items-center justify-center min-h-screen bg-background py-12">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
             <div className="flex justify-center items-center gap-2 mb-4">
