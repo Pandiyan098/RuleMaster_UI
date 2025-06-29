@@ -2,15 +2,10 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useKeycloak } from "@react-keycloak/web";
 import {
   Bot,
-  Home,
   Menu,
-  Package2,
-  Settings,
   PlusCircle,
-  BrainCircuit,
   User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,12 +22,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export function DashboardHeader() {
   const router = useRouter();
-  const { keycloak } = useKeycloak();
 
   const handleLogout = () => {
-    if (keycloak) {
-      keycloak.logout();
-    }
+    router.push('/login');
   };
 
   return (
