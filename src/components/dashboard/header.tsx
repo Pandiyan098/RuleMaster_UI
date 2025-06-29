@@ -53,6 +53,18 @@ export function DashboardHeader() {
           href="#"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
+          Recently Added Rules
+        </Link>
+        <Link
+          href="#"
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Last 10 Prompts
+        </Link>
+        <Link
+          href="#"
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
           Analytics
         </Link>
       </nav>
@@ -80,6 +92,18 @@ export function DashboardHeader() {
               className="text-muted-foreground hover:text-foreground"
             >
               Execute
+            </Link>
+            <Link
+              href="#"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Recently Added Rules
+            </Link>
+            <Link
+              href="#"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Last 10 Prompts
             </Link>
             <Link
               href="#"
