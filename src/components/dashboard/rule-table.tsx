@@ -46,7 +46,7 @@ export function RuleTable({ title, description, rules, onEdit, onToggleStatus, o
       <CardContent>
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="border-b-0 bg-muted hover:bg-muted/90">
               <TableHead>Rule Name</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="hidden md:table-cell">Created at</TableHead>
