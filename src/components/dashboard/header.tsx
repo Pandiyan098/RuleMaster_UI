@@ -49,7 +49,7 @@ export function DashboardHeader() {
           Rules
         </Link>
         <Link
-          href="#"
+          href="/dashboard/execute"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Execute
@@ -81,7 +81,7 @@ export function DashboardHeader() {
               Rules
             </Link>
             <Link
-              href="#"
+              href="/dashboard/execute"
               className="text-muted-foreground hover:text-foreground"
             >
               Execute
