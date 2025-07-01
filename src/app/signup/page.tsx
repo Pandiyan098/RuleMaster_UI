@@ -5,6 +5,24 @@ import Link from 'next/link';
 const managementAreas = [
   {
     icon: (
+      <div className="bg-orange-100 rounded-full p-3 inline-block">
+        <Home className="w-8 h-8 text-orange-600" />
+      </div>
+    ),
+    title: "Tenants",
+    description: "Manage individual tenant configurations and data.",
+  },
+  {
+    icon: (
+      <div className="bg-pink-100 rounded-full p-3 inline-block">
+        <Building2 className="w-8 h-8 text-pink-600" />
+      </div>
+    ),
+    title: "Clients",
+    description: "Administer client-specific rules, settings, and data.",
+  },
+  {
+    icon: (
       <div className="bg-blue-100 rounded-full p-3 inline-block">
         <Users className="w-8 h-8 text-blue-600" />
       </div>
@@ -29,24 +47,6 @@ const managementAreas = [
     ),
     title: "Groups",
     description: "Organize users into logical groups for bulk management.",
-  },
-  {
-    icon: (
-      <div className="bg-pink-100 rounded-full p-3 inline-block">
-        <Building2 className="w-8 h-8 text-pink-600" />
-      </div>
-    ),
-    title: "Clients",
-    description: "Administer client-specific rules, settings, and data.",
-  },
-  {
-    icon: (
-      <div className="bg-orange-100 rounded-full p-3 inline-block">
-        <Home className="w-8 h-8 text-orange-600" />
-      </div>
-    ),
-    title: "Tenants",
-    description: "Manage individual tenant configurations and data.",
   },
 ];
 
