@@ -1,49 +1,164 @@
-import { Chatbot } from "@/components/dashboard/chatbot";
-import { CopilotSidebar } from "@copilotkit/react-ui";
-import { CopilotKit } from "@copilotkit/react-core";
+'use client';
+
+import { useState } from 'react';
+import { CopilotKit } from '@copilotkit/react-core';
+import { CopilotSidebar } from '@copilotkit/react-ui';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Lightbulb } from 'lucide-react';
+  CardFooter,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Lightbulb, PlayCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+
+// Mock data for rules - in a real app, this would be fetched.
+const rules = [
+  { id: 's3', name: 'VIP Customer Discount' },
+  { id: 's2', name: 'Free Shipping' },
+  { id: 'b1', name: 'High-Value Order Alert' },
+  { id: 'e1', name: 'Overtime Pay' },
+  { id: 's1', name: 'Commission Bonus' },
+  { id: 'b2', name: 'Content Moderation' },
+  { id: 'e2', name: 'Vacation Accrual' },
+  { id: 'g2', name: 'System Maintenance Alert' },
+  { id: 'g1', name: 'Document Archival' },
+];
 
 export default function ExecutePage() {
+  const { toast } = useToast();
+  const [selectedRule, setSelectedRule] = useState('');
+  const [inputData, setInputData] = useState('');
+
+  const handleApplyRule = () => {
+    if (!selectedRule) {
+      toast({
+        variant: 'destructive',
+        title: 'No rule selected',
+        description: 'Please select a rule to apply.',
+      });
+      return;
+    }
+
+    let parsedData;
+    try {
+      if (inputData.trim()) {
+        parsedData = JSON.parse(inputData);
+      } else {
+        parsedData = {};
+      }
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid Input Data',
+        description: 'The input data must be a valid JSON object.',
+      });
+      return;
+    }
+
+    // Simulate API call to execute the rule
+    console.log(
+      `Executing rule "${selectedRule}" with data:`,
+      parsedData
+    );
+    toast({
+      title: 'Rule Executed',
+      description: `The rule "${
+        rules.find((r) => r.id === selectedRule)?.name
+      }" has been applied. Check the console for output.`,
+    });
+  };
+
   return (
-    <div className="relative">
+    <div className="grid gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Execute Rules</CardTitle>
+          <CardTitle>Execute with AI Assistant</CardTitle>
           <CardDescription>
-            Use the AI assistant to test and execute your business rules in a simulated environment.
+            Use the AI assistant to test your business rules in a simulated
+            environment.
           </CardDescription>
         </CardHeader>
         <CardContent>
-           <div className="flex items-start gap-4 rounded-lg border p-4 bg-muted/20">
-              <Lightbulb className="h-6 w-6 text-accent mt-1" />
-              <div>
-                  <h3 className="font-semibold">How it works</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Open the AI assistant using the chat bubble in the bottom-right corner.
-                    You can describe a scenario in natural language (e.g., "A customer named Alex with gold status buys an item for $120").
-                    The AI will determine which rules apply and show you the outcome.
-                  </p>
-              </div>
-           </div>
+          <div className="flex items-start gap-4 rounded-lg border bg-muted/20 p-4">
+            <Lightbulb className="mt-1 h-6 w-6 text-primary" />
+            <div>
+              <h3 className="font-semibold">How it works</h3>
+              <p className="text-sm text-muted-foreground">
+                Open the AI assistant using the chat bubble in the bottom-right
+                corner. You can describe a scenario in natural language (e.g.,
+                "A customer named Alex with gold status buys an item for $120").
+                The AI will determine which rules apply and show you the
+                outcome.
+              </p>
+            </div>
+          </div>
         </CardContent>
       </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Manual Rule Execution</CardTitle>
+          <CardDescription>
+            Select a rule, provide input data as a JSON object, and apply it
+            directly.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="rule-select">Rule</Label>
+            <Select value={selectedRule} onValueChange={setSelectedRule}>
+              <SelectTrigger id="rule-select">
+                <SelectValue placeholder="Select a rule..." />
+              </SelectTrigger>
+              <SelectContent>
+                {rules.map((rule) => (
+                  <SelectItem key={rule.id} value={rule.id}>
+                    {rule.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="input-data">Input Data (JSON)</Label>
+            <Textarea
+              id="input-data"
+              placeholder='{ "customerStatus": "gold", "orderTotal": 120 }'
+              className="min-h-[150px] font-mono text-sm"
+              value={inputData}
+              onChange={(e) => setInputData(e.target.value)}
+            />
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button onClick={handleApplyRule}>
+            <PlayCircle className="mr-2 h-4 w-4" />
+            Apply Rule
+          </Button>
+        </CardFooter>
+      </Card>
+
       <CopilotKit>
-      <div className="p-8">
-        <h1>AI Assistant</h1>
-        <p>Ask a question using the assistant on the side.</p>
-      </div>
+        <div className="hidden p-8">
+          <h1>AI Assistant</h1>
+          <p>Ask a question using the assistant on the side.</p>
+        </div>
 
-      {/* ✅ Correct prop and component */}
-      <CopilotSidebar />
-    </CopilotKit>
-
+        <CopilotSidebar />
+      </CopilotKit>
     </div>
   );
 }
