@@ -48,8 +48,9 @@ export function RuleTable({ title, description, rules, onEdit, onToggleStatus, o
         <Table>
           <TableHeader>
             <TableRow className="border-b-0 bg-muted hover:bg-muted/90">
-              <TableHead>Rule Name</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="w-[200px]">Rule Name</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead className="hidden sm:table-cell">Status</TableHead>
               <TableHead className="hidden md:table-cell">Created at</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
@@ -60,7 +61,8 @@ export function RuleTable({ title, description, rules, onEdit, onToggleStatus, o
             {rules.map((rule) => (
               <TableRow key={rule.id}>
                 <TableCell className="font-medium">{rule.name}</TableCell>
-                <TableCell>
+                <TableCell className="text-muted-foreground max-w-sm truncate">{rule.description}</TableCell>
+                <TableCell className="hidden sm:table-cell">
                   <Badge
                     variant={rule.status === "active" ? "default" : "secondary"}
                   >
