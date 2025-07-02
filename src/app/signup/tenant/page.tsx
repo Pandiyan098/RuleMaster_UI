@@ -1,105 +1,101 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import Link from 'next/link';
-import { Bot } from 'lucide-react';
-import styles from './tenant.module.css';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default function TenantLoginPage() {
-  const router = useRouter();
-  const { toast } = useToast();
+export default function CreateTenantPage() {
   const [tenantName, setTenantName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulate a successful login for prototype
-    console.log('Logging in with:', { tenantName, username, password });
-    toast({
-      title: 'Login Successful',
-      description: 'Welcome back! Redirecting to dashboard...',
-    });
-    router.push('/dashboard');
-  };
-  
-  const handleGoogleLogin = () => {
-    toast({
-        title: "Coming Soon!",
-        description: "Google login is not yet implemented."
-    });
-  }
+  const [tenantDescription, setTenantDescription] = useState('');
 
   return (
-    <div className={styles.container}>
-      <div className="absolute top-8 left-8 flex items-center gap-2 text-white">
-          <Bot className="h-6 w-6" />
-          <span className="text-xl font-semibold">RuleMaster AI</span>
-      </div>
-      <Card className="w-full max-w-sm mx-4 bg-white/10 backdrop-blur-lg border-gray-400/20 text-white">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription className="text-gray-300">
-            Enter your credentials to access your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="tenant-name">Tenant Name</Label>
-              <Input
-                id="tenant-name"
-                type="text"
-                placeholder="Your company name"
-                required
-                value={tenantName}
-                onChange={(e) => setTenantName(e.target.value)}
-                className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="your_username"
-                required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link href="#" className="ml-auto inline-block text-sm underline hover:text-gray-200">
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input 
-                id="password" 
-                type="password" 
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
-              />
-            </div>
-            <Button type="submit" className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold">
-              Login
-            </Button>
-             <Button type="button" variant="outline" className="w-full bg-transparent hover:bg-white/10 border-gray-400/50" onClick={handleGoogleLogin}>
-                Login with Google
-             </Button>
-          </form>
-        </CardContent>
-      </Card>
+    <div className="bg-gray-50 min-h-screen">
+      <main className="container mx-auto py-12 px-4 md:px-6">
+        <h1 className="text-3xl font-bold text-center mb-4">Tenant Management</h1>
+        
+        <div className="grid lg:grid-cols-5 gap-8 max-w-6xl mx-auto mt-10">
+          
+          {/* Left Column: Create Tenant Form */}
+          <div className="lg:col-span-3">
+            <Link href="/signup" className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline mb-4">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Signup Options
+            </Link>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Create Tenant</h2>
+            <Card>
+              <CardContent className="p-6">
+                <form className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="tenant-name">Tenant Name <span className="text-red-500">*</span></Label>
+                    <Input 
+                      id="tenant-name" 
+                      placeholder="Enter tenant name" 
+                      value={tenantName}
+                      onChange={(e) => setTenantName(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="tenant-description">Tenant Description</Label>
+                    <Textarea 
+                      id="tenant-description" 
+                      placeholder="Provide a brief description of the tenant" 
+                      className="min-h-[120px] resize-none"
+                      value={tenantDescription}
+                      onChange={(e) => setTenantDescription(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex justify-end gap-4">
+                    <Button variant="outline">Cancel</Button>
+                    <Button>Save</Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Column: Understanding Tenants */}
+          <div className="lg:col-span-2">
+            <Card className="h-full bg-white">
+              <CardHeader>
+                <CardTitle>Understanding Tenants</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center text-center space-y-4">
+                <Image 
+                  src="https://placehold.co/200x150.png" 
+                  alt="Understanding Tenants" 
+                  width={200} 
+                  height={150}
+                  data-ai-hint="tenant icon"
+                  className="rounded-lg mb-4"
+                />
+                <p className="text-muted-foreground text-sm">
+                  Define key details for each tenant environment.
+                </p>
+                <ol className="text-left space-y-4 text-sm text-muted-foreground w-full pl-4 pt-2">
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 bg-gray-200 text-gray-700 rounded-full h-5 w-5 flex items-center justify-center font-bold text-xs mt-0.5">1</div>
+                    <span>Enter a unique name for the new tenant.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 bg-gray-200 text-gray-700 rounded-full h-5 w-5 flex items-center justify-center font-bold text-xs mt-0.5">2</div>
+                    <span>Provide a detailed description outlining the tenant's purpose or scope.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 bg-gray-200 text-gray-700 rounded-full h-5 w-5 flex items-center justify-center font-bold text-xs mt-0.5">3</div>
+                    <span>Click 'Save' to proceed with tenant creation.</span>
+                  </li>
+                </ol>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
