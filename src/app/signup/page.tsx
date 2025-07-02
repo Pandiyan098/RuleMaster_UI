@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, KeyRound, Building2, Home } from "lucide-react";
+import { Users, KeyRound, Building2, Home, ArrowLeft } from "lucide-react";
 import Link from 'next/link';
+import { Button } from "@/components/ui/button";
 
 const managementAreas = [
   {
@@ -59,6 +60,14 @@ export default function SignupPage() {
   return (
     <div className="bg-background text-foreground">
       <main className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+        <div className="mb-8">
+            <Button asChild variant="outline">
+                <Link href="/" className="inline-flex items-center gap-2">
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Home
+                </Link>
+            </Button>
+        </div>
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold font-headline">
             Rule Engine Management

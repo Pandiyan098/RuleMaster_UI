@@ -81,14 +81,17 @@ export default function CreateClientPage() {
                                 <CardTitle>Client Configuration</CardTitle>
                             </CardHeader>
                             <CardContent className="flex flex-col items-center text-center space-y-4">
-                                <Image
-                                    src="https://placehold.co/200x150.png"
-                                    alt="Client Configuration"
-                                    width={200}
-                                    height={150}
-                                    data-ai-hint="client icon"
-                                    className="rounded-lg mb-4"
-                                />
+                            <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="50" y="50" width="100" height="100" rx="15" fill="#E0BBE4" stroke="#957DAD" strokeWidth="2"/>
+              <path d="M70 70H130V80H70V70Z" fill="#957DAD"/>
+              <circle cx="70" cy="100" r="10" fill="#957DAD"/>
+              <circle cx="130" cy="100" r="10" fill="#957DAD"/>
+              <path d="M70 120H130V130H70V120Z" fill="#957DAD"/>
+              <path d="M60 90C60 90 55 95 60 100" stroke="#FFF" strokeWidth="1" strokeLinecap="round"/>
+              <path d="M140 90C140 90 145 95 140 100" stroke="#FFF" strokeWidth="1" strokeLinecap="round"/>
+              <path d="M100 50L100 40M90 50L90 40M110 50L110 40" stroke="#FFF" strokeWidth="2" strokeLinecap="round"/>
+              <text x="100" y="110" textAnchor="middle" fill="#FFF" fontSize="10" fontWeight="bold">CLIENT</text>
+            </svg>
                                 <p className="text-muted-foreground text-sm">
                                     Set up new clients and define their access parameters. Fields will change based on client type.
                                 </p>

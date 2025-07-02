@@ -103,14 +103,16 @@ export default function CreateRolePage() {
                                 <CardTitle>Role Definition Guidelines</CardTitle>
                             </CardHeader>
                             <CardContent className="flex flex-col items-center text-center space-y-4">
-                                <Image
-                                    src="https://placehold.co/200x150.png"
-                                    alt="Role Definition"
-                                    width={200}
-                                    height={150}
-                                    data-ai-hint="role icon"
-                                    className="rounded-lg mb-4"
-                                />
+                            <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="100" r="70" fill="#E0BBE4" stroke="#957DAD" strokeWidth="2"/>
+              <path d="M100 60 L120 80 L100 140 L80 80 Z" fill="#FFF"/>
+              <circle cx="80" cy="80" r="15" fill="#957DAD"/>
+              <circle cx="120" cy="80" r="15" fill="#957DAD"/>
+              <circle cx="100" cy="140" r="15" fill="#957DAD"/>
+              <path d="M100 100 L125 125 L100 150 L75 125 Z" fill="#957DAD"/>
+              <text x="100" y="105" textAnchor="middle" fill="#FFF" fontSize="18" fontWeight="bold">R</text>
+              <text x="100" y="130" textAnchor="middle" fill="#FFF" fontSize="10">ROLE</text>
+            </svg>
                                 <p className="text-muted-foreground text-sm">
                                     Define specific roles and their associated access levels within the system.
                                 </p>

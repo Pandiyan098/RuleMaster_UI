@@ -67,14 +67,16 @@ export default function CreateTenantPage() {
                 <CardTitle>Understanding Tenants</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col items-center text-center space-y-4">
-                <Image 
-                  src="https://placehold.co/200x150.png" 
-                  alt="Understanding Tenants" 
-                  width={200} 
-                  height={150}
-                  data-ai-hint="tenant icon"
-                  className="rounded-lg mb-4"
-                />
+              <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="25" y="40" width="150" height="120" rx="15" fill="#E0BBE4" stroke="#957DAD" strokeWidth="2"/>
+              <rect x="40" y="80" width="40" height="80" fill="#957DAD"/>
+              <rect x="120" y="80" width="40" height="80" fill="#957DAD"/>
+              <circle cx="100" cy="65" r="15" fill="#FFF" stroke="#957DAD" strokeWidth="2"/>
+              <path d="M100 80L100 120" stroke="#FFF" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M70 120L100 90L130 120" stroke="#FFF" strokeWidth="2" strokeLinecap="round"/>
+              <text x="100" y="70" textAnchor="middle" fill="#957DAD" fontSize="12" fontWeight="bold">T</text>
+              <text x="100" y="100" textAnchor="middle" fill="#FFF" fontSize="10" fontWeight="bold">Tenant</text>
+            </svg>
                 <p className="text-muted-foreground text-sm">
                   Define key details for each tenant environment.
                 </p>

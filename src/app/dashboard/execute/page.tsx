@@ -41,7 +41,7 @@ export default function ExecutePage() {
       </div>
 
       {/* ✅ Correct prop and component */}
-      <CopilotSidebar chatApiEndpoint="http://localhost:3001/api/copilot" />
+      <CopilotSidebar />
     </CopilotKit>
 
     </div>

@@ -80,14 +80,16 @@ export default function CreateGroupPage() {
                                 <CardTitle>Group Creation Guidelines</CardTitle>
                             </CardHeader>
                             <CardContent className="flex flex-col items-center text-center space-y-4">
-                                <Image
-                                    src="https://placehold.co/200x150.png"
-                                    alt="Group Configuration"
-                                    width={200}
-                                    height={150}
-                                    data-ai-hint="group icon"
-                                    className="rounded-lg mb-4"
-                                />
+                            <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="70" cy="80" r="25" fill="#E0BBE4" stroke="#957DAD" strokeWidth="2"/>
+              <circle cx="130" cy="80" r="25" fill="#E0BBE4" stroke="#957DAD" strokeWidth="2"/>
+              <circle cx="100" cy="130" r="25" fill="#E0BBE4" stroke="#957DAD" strokeWidth="2"/>
+              <path d="M70 105 L70 140 A20 20 0 0 0 90 160 L110 160 A20 20 0 0 0 130 140 L130 105" fill="#957DAD"/>
+              <path d="M100 155 L100 170" stroke="#957DAD" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M70 100 Q100 120 130 100" stroke="#FFF" strokeWidth="2" strokeLinecap="round" fill="none"/>
+              <text x="100" y="130" textAnchor="middle" fill="#FFF" fontSize="16" fontWeight="bold">G</text>
+              <text x="100" y="150" textAnchor="middle" fill="#FFF" fontSize="8">GROUP</text>
+            </svg>
                                 <p className="text-muted-foreground text-sm">
                                     Create new user groups to streamline permissions and access management.
                                 </p>
