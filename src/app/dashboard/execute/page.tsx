@@ -50,7 +50,7 @@ export default function ExecutePage() {
         </CardFooter>
       </Card>
 
-      <CopilotKit>
+      <CopilotKit runtimeUrl="/api/copilotkit/">
         <div className="hidden p-8">
           <h1>AI Assistant</h1>
           <p>Ask a question using the assistant on the side.</p>
