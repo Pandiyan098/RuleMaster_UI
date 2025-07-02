@@ -50,7 +50,7 @@ export default function Home() {
       <main className="flex-1">
         <section id="hero" className="w-full py-20 md:py-32 lg:py-40 bg-card">
           <div className="container px-4 md:px-6 text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-headline tracking-tight text-primary">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-headline tracking-tight bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-transparent bg-clip-text">
               RuleMaster AI
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground md:text-xl">
