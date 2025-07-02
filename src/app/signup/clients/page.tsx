@@ -1,0 +1,120 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import styles from './page.module.css';
+
+export default function CreateClientPage() {
+    const [realm, setRealm] = useState('');
+    const [clientType, setClientType] = useState('');
+    const [clientName, setClientName] = useState('');
+
+    return (
+        <div className={styles.pageWrapper}>
+            <main className="container mx-auto py-12 px-4 md:px-6">
+                <h1 className="text-3xl font-bold text-center mb-4 text-gray-800">Client Management</h1>
+
+                <div className="grid lg:grid-cols-5 gap-8 max-w-6xl mx-auto mt-10">
+                    {/* Left Column: Client Details Form */}
+                    <div className="lg:col-span-3">
+                        <Link href="/signup" className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline mb-4">
+                            <ArrowLeft className="h-4 w-4" />
+                            Back to Signup Options
+                        </Link>
+                        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Client Details</h2>
+                        <Card>
+                            <CardContent className="p-6">
+                                <form className="space-y-6">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="realm">Select Realm <span className="text-red-500">*</span></Label>
+                                        <Select value={realm} onValueChange={setRealm}>
+                                            <SelectTrigger id="realm">
+                                                <SelectValue placeholder="Select a Realm" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="realm1">Cateina</SelectItem>
+                                                <SelectItem value="realm2">RuleMaster</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="client-type">Select Client Type <span className="text-red-500">*</span></Label>
+                                        <Select value={clientType} onValueChange={setClientType}>
+                                            <SelectTrigger id="client-type">
+                                                <SelectValue placeholder="Select Client Type" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="public">Public</SelectItem>
+                                                <SelectItem value="confidential">Confidential</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="client-name">Client Name <span className="text-red-500">*</span></Label>
+                                        <Input
+                                            id="client-name"
+                                            placeholder="Enter client name"
+                                            value={clientName}
+                                            onChange={(e) => setClientName(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="flex justify-end gap-4">
+                                        <Button variant="outline">Cancel</Button>
+                                        <Button>Save</Button>
+                                    </div>
+                                </form>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    {/* Right Column: Client Configuration */}
+                    <div className="lg:col-span-2">
+                        <Card className="h-full bg-white">
+                            <CardHeader>
+                                <CardTitle>Client Configuration</CardTitle>
+                            </CardHeader>
+                            <CardContent className="flex flex-col items-center text-center space-y-4">
+                                <Image
+                                    src="https://placehold.co/200x150.png"
+                                    alt="Client Configuration"
+                                    width={200}
+                                    height={150}
+                                    data-ai-hint="client icon"
+                                    className="rounded-lg mb-4"
+                                />
+                                <p className="text-muted-foreground text-sm">
+                                    Set up new clients and define their access parameters. Fields will change based on client type.
+                                </p>
+                                <ol className="text-left space-y-4 text-sm text-muted-foreground w-full pl-4 pt-2">
+                                    <li className="flex items-start gap-3">
+                                        <div className="flex-shrink-0 bg-gray-200 text-gray-700 rounded-full h-5 w-5 flex items-center justify-center font-bold text-xs mt-0.5">1</div>
+                                        <span>Select the specific realm the client belongs to.</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <div className="flex-shrink-0 bg-gray-200 text-gray-700 rounded-full h-5 w-5 flex items-center justify-center font-bold text-xs mt-0.5">2</div>
+                                        <span>Choose whether the client is 'Public' or 'Confidential'.</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <div className="flex-shrink-0 bg-gray-200 text-gray-700 rounded-full h-5 w-5 flex items-center justify-center font-bold text-xs mt-0.5">3</div>
+                                        <span>Enter a descriptive name for the client.</span>
+                                    </li>
+                                     <li className="flex items-start gap-3">
+                                        <div className="flex-shrink-0 bg-gray-200 text-gray-700 rounded-full h-5 w-5 flex items-center justify-center font-bold text-xs mt-0.5">4</div>
+                                        <span>Click 'Save' to finalize client creation.</span>
+                                    </li>
+                                </ol>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </main>
+        </div>
+    );
+}

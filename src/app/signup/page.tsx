@@ -21,7 +21,7 @@ const managementAreas = [
     ),
     title: "Clients",
     description: "Administer client-specific rules, settings, and data.",
-    href: "#",
+    href: "/signup/clients",
   },
   {
     icon: (
