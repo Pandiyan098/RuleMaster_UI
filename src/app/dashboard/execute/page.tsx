@@ -6,12 +6,25 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 import { Lightbulb } from 'lucide-react';
 
 export default function ExecutePage() {
+  const { toast } = useToast();
+
+  const handleApplyRule = () => {
+    toast({
+      title: 'Action Triggered',
+      description:
+        'The "Apply Rule" functionality can be connected to an AI flow.',
+    });
+  };
+
   return (
     <div className="grid gap-6">
       <Card>
@@ -32,6 +45,9 @@ export default function ExecutePage() {
             </div>
           </div>
         </CardContent>
+        <CardFooter className="flex justify-end">
+          <Button onClick={handleApplyRule}>Apply Rule</Button>
+        </CardFooter>
       </Card>
 
       <CopilotKit>
