@@ -53,9 +53,6 @@ export default function DashboardPage() {
 
       setRules(transformedRules);
     } catch (e) {
-      const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
-      console.error(`Could not fetch rules from "${apiUrl}". Please ensure the API server is running and that it allows requests from this application (CORS). Error: ${errorMessage}`);
-      
       toast({
         variant: 'destructive',
         title: 'API Connection Failed',
