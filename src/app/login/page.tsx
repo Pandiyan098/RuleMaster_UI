@@ -8,16 +8,22 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import Link from 'next/link';
-import { Bot, ArrowLeft } from 'lucide-react';
+import { Bot, ArrowLeft, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
   const [tenantName, setTenantName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    // Simulate a network request for demonstration
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
     // Simulate a successful login for prototype
     console.log('Logging in with:', { tenantName, username, password });
     toast({
@@ -67,6 +73,7 @@ export default function LoginPage() {
                 value={tenantName}
                 onChange={(e) => setTenantName(e.target.value)}
                 className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
+                disabled={isLoading}
               />
             </div>
             <div className="space-y-2">
@@ -79,6 +86,7 @@ export default function LoginPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
+                disabled={isLoading}
               />
             </div>
             <div className="space-y-2">
@@ -95,12 +103,13 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="bg-transparent border-gray-400/50 placeholder:text-gray-400"
+                disabled={isLoading}
               />
             </div>
-            <Button type="submit" className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold">
-              Login
+            <Button type="submit" className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold" disabled={isLoading}>
+              {isLoading ? <Loader2 className="animate-spin" /> : 'Login'}
             </Button>
-             <Button type="button" variant="outline" className="w-full bg-transparent hover:bg-white/10 border-gray-400/50" onClick={handleGoogleLogin}>
+             <Button type="button" variant="outline" className="w-full bg-transparent hover:bg-white/10 border-gray-400/50" onClick={handleGoogleLogin} disabled={isLoading}>
                 Login with Google
              </Button>
           </form>
