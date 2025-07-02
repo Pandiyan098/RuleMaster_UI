@@ -31,7 +31,7 @@ const managementAreas = [
     ),
     title: "Users",
     description: "Manage individual user accounts & permissions.",
-    href: "#",
+    href: "/signup/users",
   },
   {
     icon: (
