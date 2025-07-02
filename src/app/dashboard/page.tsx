@@ -32,7 +32,7 @@ export default function DashboardPage() {
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     // Use an environment variable for the API URL for better configuration.
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/rules`;
+    const apiUrl = `http://localhost:4000/api/rules`;
     try {
       const response = await fetch(apiUrl);
       
@@ -41,6 +41,7 @@ export default function DashboardPage() {
       }
 
       const data: ApiRule[] = await response.json();
+      console.log("Fetched rules:", data);
 
       // Transform the API data to match the `Rule` type expected by components
       const transformedRules = data.map(apiRule => ({

@@ -90,17 +90,50 @@ export function RuleForm() {
     form.setValue("clarifiedRule", "");
   };
   
+  const TENANT_ID = "02caae70-9c87-4f0f-a393-5b0f92283a42"; 
+
   const handleSaveClick = () => {
-    form.trigger().then((isValid) => {
-        if (isValid) {
-            formRef.current?.requestSubmit();
-        } else {
-             toast({
-                variant: 'destructive',
-                title: 'Invalid Form',
-                description: "Please correct the errors before saving.",
-             });
+    form.trigger().then(async (isValid) => {
+      if (isValid) {
+        const values = form.getValues();
+        try {
+          const response = await fetch("http://localhost:4000/api/rules", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: values.ruleDefinition,
+              tenant_id: TENANT_ID,
+            }),
+          });
+
+          if (response.ok) {
+            setShowSuccess(true);
+            form.reset();
+            setTimeout(() => setShowSuccess(false), 3000);
+          } else {
+            const errorData = await response.json();
+            toast({
+              variant: 'destructive',
+              title: 'API Error',
+              description: errorData.message || "Failed to create rule.",
+            });
+          }
+        } catch (error) {
+          toast({
+            variant: 'destructive',
+            title: 'Network Error',
+            description: "Could not connect to the API.",
+          });
         }
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Invalid Form',
+          description: "Please correct the errors before saving.",
+        });
+      }
     });
   }
 
