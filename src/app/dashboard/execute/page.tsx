@@ -1,7 +1,5 @@
 'use client';
 
-import { CopilotKit } from '@copilotkit/react-core';
-import { CopilotSidebar } from '@copilotkit/react-ui';
 import {
   Card,
   CardContent,
@@ -49,15 +47,6 @@ export default function ExecutePage() {
           <Button onClick={handleApplyRule}>Apply Rule</Button>
         </CardFooter>
       </Card>
-
-      <CopilotKit runtimeUrl="/api/copilotkit/">
-        <div className="hidden p-8">
-          <h1>AI Assistant</h1>
-          <p>Ask a question using the assistant on the side.</p>
-        </div>
-
-        <CopilotSidebar />
-      </CopilotKit>
     </div>
   );
 }
