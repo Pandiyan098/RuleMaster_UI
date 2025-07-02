@@ -96,7 +96,7 @@ export default function Home() {
               <CardContent className="p-4 md:p-6">
                 <Table>
                   <TableHeader>
-                    <TableRow>
+                    <TableRow className="bg-muted hover:bg-muted/90">
                       <TableHead>Rule Name</TableHead>
                       <TableHead className="hidden sm:table-cell">Trigger Condition</TableHead>
                       <TableHead className="hidden md:table-cell">Action</TableHead>
@@ -110,7 +110,7 @@ export default function Home() {
                         <TableCell className="hidden sm:table-cell text-muted-foreground">{rule.trigger}</TableCell>
                         <TableCell className="hidden md:table-cell text-muted-foreground">{rule.action}</TableCell>
                         <TableCell>
-                           <Badge variant={rule.status === 'active' ? 'default' : 'secondary'}>
+                           <Badge variant={rule.status === 'active' ? 'success' : 'secondary'}>
                             {rule.status}
                           </Badge>
                         </TableCell>
