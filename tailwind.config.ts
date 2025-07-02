@@ -95,10 +95,15 @@ export default {
             height: '0',
           },
         },
+        shine: {
+          'from': { transform: 'translateX(-150%) skewX(-15deg)' },
+          'to': { transform: 'translateX(150%) skewX(-15deg)' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'shine': 'shine 3s ease-in-out infinite',
       },
     },
   },

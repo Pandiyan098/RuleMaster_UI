@@ -57,8 +57,11 @@ export default function Home() {
               Streamline your business logic. Define, manage, and apply custom rules using natural language and AI-powered automation.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="font-bold">
-                <Link href="/signup">Get Started <ChevronRight className="ml-2 h-5 w-5" /></Link>
+              <Button asChild size="lg" className="font-bold relative overflow-hidden">
+                <Link href="/signup">
+                  <span className="absolute inset-0 -translate-x-full animate-shine bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                  Get Started <ChevronRight className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="font-bold">
                 <Link href="/login">Sign In</Link>
