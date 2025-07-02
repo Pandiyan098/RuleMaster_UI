@@ -23,6 +23,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Lightbulb, PlayCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Separator } from '@/components/ui/separator';
 
 // Mock data for rules - in a real app, this would be fetched.
 const rules = [
@@ -85,36 +86,17 @@ export default function ExecutePage() {
     <div className="grid gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Execute with AI Assistant</CardTitle>
+          <CardTitle>Execute Rules</CardTitle>
           <CardDescription>
-            Use the AI assistant to test your business rules in a simulated
-            environment.
+            Test your business logic by applying rules manually or by using the AI assistant.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-start gap-4 rounded-lg border bg-muted/20 p-4">
-            <Lightbulb className="mt-1 h-6 w-6 text-primary" />
-            <div>
-              <h3 className="font-semibold">How it works</h3>
-              <p className="text-sm text-muted-foreground">
-                Open the AI assistant using the chat bubble in the bottom-right
-                corner. You can describe a scenario in natural language (e.g.,
-                "A customer named Alex with gold status buys an item for $120").
-                The AI will determine which rules apply and show you the
-                outcome.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="space-y-4 pt-6">
+        <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="rule-select">Rule</Label>
             <Select value={selectedRule} onValueChange={setSelectedRule}>
               <SelectTrigger id="rule-select">
-                <SelectValue placeholder="Select a rule..." />
+                <SelectValue placeholder="Select a rule to apply..." />
               </SelectTrigger>
               <SelectContent>
                 {rules.map((rule) => (
@@ -134,6 +116,22 @@ export default function ExecutePage() {
               value={inputData}
               onChange={(e) => setInputData(e.target.value)}
             />
+          </div>
+
+          <Separator />
+          
+          <div className="flex items-start gap-4 rounded-lg border bg-muted/20 p-4">
+            <Lightbulb className="mt-1 h-6 w-6 text-primary" />
+            <div>
+              <h3 className="font-semibold">Or, use the AI Assistant</h3>
+              <p className="text-sm text-muted-foreground">
+                Open the AI assistant using the chat bubble in the bottom-right
+                corner. You can describe a scenario in natural language (e.g.,
+                "A customer named Alex with gold status buys an item for $120").
+                The AI will determine which rules apply and show you the
+                outcome.
+              </p>
+            </div>
           </div>
         </CardContent>
         <CardFooter>
