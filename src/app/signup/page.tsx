@@ -51,7 +51,7 @@ const managementAreas = [
     ),
     title: "Groups",
     description: "Organize users into logical groups for bulk management.",
-    href: "#",
+    href: "/signup/groups",
   },
 ];
 
