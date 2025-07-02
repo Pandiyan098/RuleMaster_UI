@@ -1,6 +1,7 @@
 "use client";
 
 import type { Rule } from "@/lib/definitions";
+import { format } from "date-fns";
 import { MoreHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -67,7 +68,7 @@ export function RuleTable({ title, description, rules, onEdit, onToggleStatus, o
                   </Badge>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  {new Date(rule.createdAt).toLocaleDateString()}
+                  {format(new Date(rule.createdAt), "MM/dd/yyyy")}
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
