@@ -47,15 +47,26 @@ export async function createRuleAction(
     const tenantId = '02caae70-9c87-4f0f-a393-5b0f92283a42';
 
     try {
+        const body: {
+            rule_name: string;
+            rule_description?: string;
+            prompt: string;
+            tenant_id: string;
+        } = {
+            rule_name: parsed.data.name,
+            prompt: parsed.data.ruleDefinition,
+            tenant_id: tenantId,
+        };
+        if (parsed.data.description) {
+            body.rule_description = parsed.data.description;
+        }
+
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                prompt: parsed.data.ruleDefinition,
-                tenant_id: tenantId,
-            }),
+            body: JSON.stringify(body),
         });
 
         if (!response.ok) {
