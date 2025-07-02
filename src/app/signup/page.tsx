@@ -41,7 +41,7 @@ const managementAreas = [
     ),
     title: "Roles",
     description: "Define and assign access roles & hierarchies.",
-    href: "#",
+    href: "/signup/roles",
   },
   {
     icon: (
