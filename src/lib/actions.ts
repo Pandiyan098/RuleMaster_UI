@@ -43,12 +43,51 @@ export async function createRuleAction(
         }
     }
 
-    // In a real app, you would save `parsed.data` to a database here.
-    const ruleData = parsed.data;
-    console.log("Rule created successfully:", ruleData);
+    const apiUrl = 'http://192.168.99.132:4000/api/rules';
+    const tenantId = '02caae70-9c87-4f0f-a393-5b0f92283a42';
 
-    revalidatePath('/dashboard');
-    // We are not redirecting to show a success message on the form page itself.
-    
-    return { message: "Rule created successfully!" };
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                prompt: parsed.data.ruleDefinition,
+                tenant_id: tenantId,
+            }),
+        });
+
+        if (!response.ok) {
+            let errorMessage = `API request failed with status: ${response.status}`;
+            try {
+                const errorData = await response.json();
+                if (errorData.message) {
+                    errorMessage = errorData.message;
+                }
+            } catch (e) {
+                // Ignore if response is not JSON
+            }
+             return {
+                message: "Failed to create rule.",
+                issues: [errorMessage],
+                fields: data as Record<string, string>,
+            }
+        }
+        
+        const responseData = await response.json();
+        console.log("Rule created successfully via API:", responseData);
+
+        revalidatePath('/dashboard');
+        
+        return { message: "Rule created successfully!" };
+
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An unknown network error occurred.";
+        return {
+            message: "Failed to create rule.",
+            issues: [errorMessage],
+            fields: data as Record<string, string>,
+        }
+    }
 }
