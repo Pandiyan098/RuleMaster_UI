@@ -9,14 +9,68 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import styles from './page.module.css';
+import { useToast } from '@/hooks/use-toast';
+
+type Errors = {
+    userType?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    username?: string;
+};
 
 export default function CreateUserPage() {
+    const { toast } = useToast();
     const [userType, setUserType] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [realm, setRealm] = useState('');
+    const [errors, setErrors] = useState<Errors>({});
+
+    const validate = () => {
+        const newErrors: Errors = {};
+        if (!userType) newErrors.userType = 'User type is required.';
+        if (!firstName) newErrors.firstName = 'First name is required.';
+        if (!lastName) newErrors.lastName = 'Last name is required.';
+        if (!email) {
+            newErrors.email = 'Email is required.';
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = 'Email address is invalid.';
+        }
+        if (!username) newErrors.username = 'Username is required.';
+        return newErrors;
+    };
+
+    const handleReset = () => {
+        setUserType('');
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setUsername('');
+        setRealm('');
+        setErrors({});
+    };
+    
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const newErrors = validate();
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setErrors({});
+        console.log('Form submitted:', { userType, firstName, lastName, email, username, realm });
+        
+        toast({
+            title: 'Success!',
+            description: 'User has been created successfully.',
+        });
+
+        handleReset();
+    };
 
     return (
         <div className={styles.pageWrapper}>
@@ -30,7 +84,7 @@ export default function CreateUserPage() {
 
                     <Card>
                         <CardContent className="p-6">
-                             <form className="space-y-6">
+                             <form className="space-y-6" onSubmit={handleSubmit}>
                                 <div className="space-y-2">
                                     <Label htmlFor="user-type">User type <span className="text-red-500">*</span></Label>
                                     <Select value={userType} onValueChange={setUserType}>
@@ -43,6 +97,7 @@ export default function CreateUserPage() {
                                             <SelectItem value="guest">Guest</SelectItem>
                                         </SelectContent>
                                     </Select>
+                                    {errors.userType && <p className="text-sm text-red-600 mt-1">{errors.userType}</p>}
                                 </div>
 
                                  <div className="space-y-2">
@@ -53,6 +108,7 @@ export default function CreateUserPage() {
                                         value={firstName}
                                         onChange={(e) => setFirstName(e.target.value)}
                                     />
+                                    {errors.firstName && <p className="text-sm text-red-600 mt-1">{errors.firstName}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="last-name">Last name <span className="text-red-500">*</span></Label>
@@ -62,6 +118,7 @@ export default function CreateUserPage() {
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}
                                     />
+                                    {errors.lastName && <p className="text-sm text-red-600 mt-1">{errors.lastName}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email <span className="text-red-500">*</span></Label>
@@ -72,6 +129,7 @@ export default function CreateUserPage() {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
+                                    {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="username">Username <span className="text-red-500">*</span></Label>
@@ -81,6 +139,7 @@ export default function CreateUserPage() {
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
                                     />
+                                    {errors.username && <p className="text-sm text-red-600 mt-1">{errors.username}</p>}
                                 </div>
 
                                 <div className="space-y-2">
@@ -97,8 +156,8 @@ export default function CreateUserPage() {
                                 </div>
 
                                 <div className="flex justify-end gap-4 pt-4">
-                                    <Button variant="outline">Cancel</Button>
-                                    <Button>Save</Button>
+                                    <Button variant="outline" type="button" onClick={handleReset}>Cancel</Button>
+                                    <Button type="submit">Save</Button>
                                 </div>
                             </form>
                         </CardContent>

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -12,8 +11,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import styles from './page.module.css';
+import { useToast } from '@/hooks/use-toast';
+
+type Errors = {
+    roleName?: string;
+    department?: string;
+};
 
 export default function CreateRolePage() {
+    const { toast } = useToast();
     const [roleName, setRoleName] = useState('');
     const [department, setDepartment] = useState('');
     const [permissions, setPermissions] = useState({
@@ -22,9 +28,43 @@ export default function CreateRolePage() {
         view: false,
         delete: false,
     });
+    const [errors, setErrors] = useState<Errors>({});
 
     const handlePermissionChange = (permission: keyof typeof permissions) => {
         setPermissions(prev => ({ ...prev, [permission]: !prev[permission] }));
+    };
+
+    const validate = () => {
+        const newErrors: Errors = {};
+        if (!roleName) newErrors.roleName = 'Role name is required.';
+        if (!department) newErrors.department = 'Department is required.';
+        return newErrors;
+    };
+
+    const handleReset = () => {
+        setRoleName('');
+        setDepartment('');
+        setPermissions({ create: false, edit: false, view: false, delete: false });
+        setErrors({});
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const newErrors = validate();
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setErrors({});
+        console.log('Form submitted:', { roleName, department, permissions });
+
+        toast({
+            title: 'Success!',
+            description: 'Role has been created successfully.',
+        });
+
+        handleReset();
     };
 
     return (
@@ -42,7 +82,7 @@ export default function CreateRolePage() {
                         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Role Details & Permissions</h2>
                         <Card>
                             <CardContent className="p-6">
-                                <form className="space-y-6">
+                                <form className="space-y-6" onSubmit={handleSubmit}>
                                     <div className="space-y-2">
                                         <Label htmlFor="role-name">Role Name <span className="text-red-500">*</span></Label>
                                         <Input
@@ -51,6 +91,7 @@ export default function CreateRolePage() {
                                             value={roleName}
                                             onChange={(e) => setRoleName(e.target.value)}
                                         />
+                                        {errors.roleName && <p className="text-sm text-red-600 mt-1">{errors.roleName}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="department">Select Department <span className="text-red-500">*</span></Label>
@@ -65,6 +106,7 @@ export default function CreateRolePage() {
                                                 <SelectItem value="hr">Human Resources</SelectItem>
                                             </SelectContent>
                                         </Select>
+                                        {errors.department && <p className="text-sm text-red-600 mt-1">{errors.department}</p>}
                                     </div>
                                     <div className="space-y-4">
                                         <Label>Assign Access Permissions:</Label>
@@ -88,8 +130,8 @@ export default function CreateRolePage() {
                                         </div>
                                     </div>
                                     <div className="flex justify-end gap-4 pt-4">
-                                        <Button variant="outline">Cancel</Button>
-                                        <Button>Save Role</Button>
+                                        <Button variant="outline" type="button" onClick={handleReset}>Cancel</Button>
+                                        <Button type="submit">Save Role</Button>
                                     </div>
                                 </form>
                             </CardContent>

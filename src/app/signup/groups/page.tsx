@@ -11,11 +11,53 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import styles from './page.module.css';
+import { useToast } from '@/hooks/use-toast';
+
+type Errors = {
+    realm?: string;
+    groupName?: string;
+};
 
 export default function CreateGroupPage() {
+    const { toast } = useToast();
     const [realm, setRealm] = useState('');
     const [groupName, setGroupName] = useState('');
     const [groupDescription, setGroupDescription] = useState('');
+    const [errors, setErrors] = useState<Errors>({});
+
+    const validate = () => {
+        const newErrors: Errors = {};
+        if (!realm) newErrors.realm = 'Realm is required.';
+        if (!groupName) newErrors.groupName = 'Group name is required.';
+        return newErrors;
+    };
+
+    const handleReset = () => {
+        setRealm('');
+        setGroupName('');
+        setGroupDescription('');
+        setErrors({});
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const newErrors = validate();
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setErrors({});
+        console.log('Form submitted:', { realm, groupName, groupDescription });
+
+        toast({
+            title: 'Success!',
+            description: 'Group has been created successfully.',
+        });
+
+        handleReset();
+    };
+
 
     return (
         <div className={styles.pageWrapper}>
@@ -32,7 +74,7 @@ export default function CreateGroupPage() {
                         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Group Details</h2>
                         <Card>
                             <CardContent className="p-6">
-                                <form className="space-y-6">
+                                <form className="space-y-6" onSubmit={handleSubmit}>
                                     <div className="space-y-2">
                                         <Label htmlFor="realm">Select Realm <span className="text-red-500">*</span></Label>
                                         <Select value={realm} onValueChange={setRealm}>
@@ -44,6 +86,7 @@ export default function CreateGroupPage() {
                                                 <SelectItem value="realm2">RuleMaster</SelectItem>
                                             </SelectContent>
                                         </Select>
+                                        {errors.realm && <p className="text-sm text-red-600 mt-1">{errors.realm}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="group-name">Group Name <span className="text-red-500">*</span></Label>
@@ -53,6 +96,7 @@ export default function CreateGroupPage() {
                                             value={groupName}
                                             onChange={(e) => setGroupName(e.target.value)}
                                         />
+                                        {errors.groupName && <p className="text-sm text-red-600 mt-1">{errors.groupName}</p>}
                                     </div>
                                      <div className="space-y-2">
                                         <Label htmlFor="group-description">Group Description</Label>
@@ -65,8 +109,8 @@ export default function CreateGroupPage() {
                                         />
                                     </div>
                                     <div className="flex justify-end gap-4">
-                                        <Button variant="outline">Cancel</Button>
-                                        <Button>Save</Button>
+                                        <Button variant="outline" type="button" onClick={handleReset}>Cancel</Button>
+                                        <Button type="submit">Save</Button>
                                     </div>
                                 </form>
                             </CardContent>

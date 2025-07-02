@@ -10,11 +10,55 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import styles from './page.module.css';
+import { useToast } from '@/hooks/use-toast';
+
+type Errors = {
+    realm?: string;
+    clientType?: string;
+    clientName?: string;
+};
 
 export default function CreateClientPage() {
+    const { toast } = useToast();
     const [realm, setRealm] = useState('');
     const [clientType, setClientType] = useState('');
     const [clientName, setClientName] = useState('');
+    const [errors, setErrors] = useState<Errors>({});
+
+    const validate = () => {
+        const newErrors: Errors = {};
+        if (!realm) newErrors.realm = 'Realm is required.';
+        if (!clientType) newErrors.clientType = 'Client type is required.';
+        if (!clientName) newErrors.clientName = 'Client name is required.';
+        return newErrors;
+    };
+
+    const handleReset = () => {
+        setRealm('');
+        setClientType('');
+        setClientName('');
+        setErrors({});
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const newErrors = validate();
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setErrors({});
+        console.log('Form submitted:', { realm, clientType, clientName });
+
+        toast({
+            title: 'Success!',
+            description: 'Client has been created successfully.',
+        });
+
+        handleReset();
+    };
+
 
     return (
         <div className={styles.pageWrapper}>
@@ -31,7 +75,7 @@ export default function CreateClientPage() {
                         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Client Details</h2>
                         <Card>
                             <CardContent className="p-6">
-                                <form className="space-y-6">
+                                <form className="space-y-6" onSubmit={handleSubmit}>
                                     <div className="space-y-2">
                                         <Label htmlFor="realm">Select Realm <span className="text-red-500">*</span></Label>
                                         <Select value={realm} onValueChange={setRealm}>
@@ -43,6 +87,7 @@ export default function CreateClientPage() {
                                                 <SelectItem value="realm2">RuleMaster</SelectItem>
                                             </SelectContent>
                                         </Select>
+                                        {errors.realm && <p className="text-sm text-red-600 mt-1">{errors.realm}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="client-type">Select Client Type <span className="text-red-500">*</span></Label>
@@ -55,6 +100,7 @@ export default function CreateClientPage() {
                                                 <SelectItem value="confidential">Confidential</SelectItem>
                                             </SelectContent>
                                         </Select>
+                                        {errors.clientType && <p className="text-sm text-red-600 mt-1">{errors.clientType}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="client-name">Client Name <span className="text-red-500">*</span></Label>
@@ -64,10 +110,11 @@ export default function CreateClientPage() {
                                             value={clientName}
                                             onChange={(e) => setClientName(e.target.value)}
                                         />
+                                        {errors.clientName && <p className="text-sm text-red-600 mt-1">{errors.clientName}</p>}
                                     </div>
                                     <div className="flex justify-end gap-4">
-                                        <Button variant="outline">Cancel</Button>
-                                        <Button>Save</Button>
+                                        <Button variant="outline" type="button" onClick={handleReset}>Cancel</Button>
+                                        <Button type="submit">Save</Button>
                                     </div>
                                 </form>
                             </CardContent>

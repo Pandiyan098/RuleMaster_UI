@@ -10,10 +10,44 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import styles from './page.module.css';
+import { useToast } from '@/hooks/use-toast';
 
 export default function CreateTenantPage() {
+  const { toast } = useToast();
   const [tenantName, setTenantName] = useState('');
   const [tenantDescription, setTenantDescription] = useState('');
+  const [errors, setErrors] = useState<{ tenantName?: string }>({});
+
+  const validate = () => {
+    const newErrors: { tenantName?: string } = {};
+    if (!tenantName) {
+      newErrors.tenantName = 'Tenant name is required.';
+    }
+    return newErrors;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
+    // Clear errors and submit form
+    setErrors({});
+    console.log('Form submitted:', { tenantName, tenantDescription });
+    
+    toast({
+      title: 'Success!',
+      description: 'Tenant has been created successfully.',
+    });
+    
+    // Reset form
+    setTenantName('');
+    setTenantDescription('');
+  };
+
 
   return (
     <div className={styles.pageWrapper}>
@@ -31,7 +65,7 @@ export default function CreateTenantPage() {
             <h2 className="text-2xl font-semibold mb-4 text-gray-800">Create Tenant</h2>
             <Card>
               <CardContent className="p-6">
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="space-y-2">
                     <Label htmlFor="tenant-name">Tenant Name <span className="text-red-500">*</span></Label>
                     <Input 
@@ -40,6 +74,7 @@ export default function CreateTenantPage() {
                       value={tenantName}
                       onChange={(e) => setTenantName(e.target.value)}
                     />
+                    {errors.tenantName && <p className="text-sm text-red-600 mt-1">{errors.tenantName}</p>}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="tenant-description">Tenant Description</Label>
@@ -52,8 +87,12 @@ export default function CreateTenantPage() {
                     />
                   </div>
                   <div className="flex justify-end gap-4">
-                    <Button variant="outline">Cancel</Button>
-                    <Button>Save</Button>
+                    <Button variant="outline" type="button" onClick={() => {
+                        setTenantName('');
+                        setTenantDescription('');
+                        setErrors({});
+                    }}>Cancel</Button>
+                    <Button type="submit">Save</Button>
                   </div>
                 </form>
               </CardContent>
