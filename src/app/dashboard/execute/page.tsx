@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -9,18 +10,56 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Lightbulb } from 'lucide-react';
 
 export default function ExecutePage() {
   const { toast } = useToast();
+  const [prompt, setPrompt] = useState('');
 
-  const handleApplyRule = () => {
-    toast({
-      title: 'Action Triggered',
-      description:
-        'The "Apply Rule" functionality can be connected to an AI flow.',
-    });
+  const TENANT_ID = "02caae70-9c87-4f0f-a393-5b0f92283a42";
+
+  const handleApplyRule = async () => {
+    let cleanedPrompt = prompt.trim().replace(/^apply rule\s*/i, '');
+
+    if (!cleanedPrompt) {
+      toast({
+        variant: 'destructive',
+        title: 'Prompt Required',
+        description: 'Please enter a scenario to apply the rule.',
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:4000/api/rules/apply?tenant_id=${TENANT_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: cleanedPrompt }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: 'Rule Applied',
+          description: data.result || 'Rule applied successfully.',
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: data.message || 'Failed to apply rule.',
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Network Error',
+        description: 'Could not connect to the API.',
+      });
+    }
   };
 
   return (
@@ -42,10 +81,15 @@ export default function ExecutePage() {
               </p>
             </div>
           </div>
+          <div className="mt-6 flex gap-2">
+            <Input
+              placeholder='Describe your scenario (e.g., "sales reached 15%")'
+              value={prompt}
+              onChange={e => setPrompt(e.target.value)}
+            />
+            <Button onClick={handleApplyRule}>Apply Rule</Button>
+          </div>
         </CardContent>
-        <CardFooter className="flex justify-end">
-          <Button onClick={handleApplyRule}>Apply Rule</Button>
-        </CardFooter>
       </Card>
     </div>
   );
