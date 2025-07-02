@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import type { Rule } from "@/lib/definitions";
 import { RuleTable } from "@/components/dashboard/rule-table";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 
 
 // The API response structure from your prompt
@@ -31,43 +32,43 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      // Use an environment variable for the API URL for better configuration.
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/rules`;
-      try {
-        const response = await fetch(apiUrl);
-        
-        if (!response.ok) {
-          throw new Error(`Network response was not ok, status: ${response.status}`);
-        }
-
-        const data: ApiRule[] = await response.json();
-
-        // Transform the API data to match the `Rule` type expected by components
-        const transformedRules = data.map(apiRule => ({
-          id: String(apiRule.rule_id),
-          name: apiRule.rule_name,
-          description: apiRule.rule_description,
-          status: apiRule.status as 'active' | 'inactive',
-          createdAt: apiRule.created_on,
-        }));
-
-        setRules(transformedRules);
-      } catch (e) {
-        const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
-        console.error("Failed to fetch rules:", e);
-        // Provide a more detailed error message to help with debugging.
-        setError(`Could not fetch rules from "${apiUrl}". Please ensure the API server is running and that it allows requests from this application (CORS). Error: ${errorMessage}`);
-      } finally {
-        setIsLoading(false);
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    // Use an environment variable for the API URL for better configuration.
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/rules`;
+    try {
+      const response = await fetch(apiUrl);
+      
+      if (!response.ok) {
+        throw new Error(`Network response was not ok, status: ${response.status}`);
       }
-    };
 
-    fetchData();
+      const data: ApiRule[] = await response.json();
+
+      // Transform the API data to match the `Rule` type expected by components
+      const transformedRules = data.map(apiRule => ({
+        id: String(apiRule.rule_id),
+        name: apiRule.rule_name,
+        description: apiRule.rule_description,
+        status: apiRule.status as 'active' | 'inactive',
+        createdAt: apiRule.created_on,
+      }));
+
+      setRules(transformedRules);
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
+      console.error("Failed to fetch rules:", e);
+      // Provide a more detailed error message to help with debugging.
+      setError(`Could not fetch rules from "${apiUrl}". Please ensure the API server is running and that it allows requests from this application (CORS). Error: ${errorMessage}`);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleToggleStatus = (ruleId: string) => {
     setRules(prevRules =>
@@ -102,7 +103,15 @@ export default function DashboardPage() {
         <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error Fetching Data</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>
+              <div className="flex flex-col gap-4 mt-2">
+                <span>{error}</span>
+                <Button variant="secondary" className="self-start" onClick={fetchData}>
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    Try Again
+                </Button>
+              </div>
+            </AlertDescription>
         </Alert>
     );
   }
