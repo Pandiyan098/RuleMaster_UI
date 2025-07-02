@@ -109,14 +109,7 @@ export default function ExecutePage() {
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Manual Rule Execution</CardTitle>
-          <CardDescription>
-            Select a rule, provide input data as a JSON object, and apply it
-            directly.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pt-6">
           <div className="space-y-2">
             <Label htmlFor="rule-select">Rule</Label>
             <Select value={selectedRule} onValueChange={setSelectedRule}>
