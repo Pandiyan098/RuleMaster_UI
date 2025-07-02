@@ -35,8 +35,10 @@ export default function DashboardPage() {
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
+      // Use an environment variable for the API URL for better configuration.
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/rules`;
       try {
-        const response = await fetch('http://localhost:4000/api/rules');
+        const response = await fetch(apiUrl);
         
         if (!response.ok) {
           throw new Error(`Network response was not ok, status: ${response.status}`);
@@ -57,7 +59,8 @@ export default function DashboardPage() {
       } catch (e) {
         const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
         console.error("Failed to fetch rules:", e);
-        setError(`Could not fetch rules. Please ensure the API server is running at http://localhost:4000. Error: ${errorMessage}`);
+        // Provide a more detailed error message to help with debugging.
+        setError(`Could not fetch rules from "${apiUrl}". Please ensure the API server is running and that it allows requests from this application (CORS). Error: ${errorMessage}`);
       } finally {
         setIsLoading(false);
       }
