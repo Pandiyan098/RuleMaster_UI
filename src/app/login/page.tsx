@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import Link from 'next/link';
-import { Bot } from 'lucide-react';
+import { Bot, ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,9 +36,17 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-600">
-      <div className="absolute top-8 left-8 flex items-center gap-2 text-white">
-          <Bot className="h-6 w-6" />
-          <span className="text-xl font-semibold">RuleMaster AI</span>
+      <div className="absolute top-8 left-8 flex items-center gap-4 text-white">
+        <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/10" asChild>
+            <Link href="/">
+                <ArrowLeft className="h-4 w-4" />
+                <span className="sr-only">Back to Home</span>
+            </Link>
+        </Button>
+        <div className="flex items-center gap-2">
+            <Bot className="h-6 w-6" />
+            <span className="text-xl font-semibold">RuleMaster AI</span>
+        </div>
       </div>
       <Card className="w-full max-w-sm mx-4 bg-white/10 backdrop-blur-lg border-gray-400/20 text-white">
         <CardHeader className="text-center">
