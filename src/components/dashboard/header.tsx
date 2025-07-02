@@ -140,7 +140,7 @@ export function DashboardHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
               <Avatar>
-                <AvatarImage src="https://placehold.co/40x40.png" alt="@user" data-ai-hint="profile avatar"/>
+                <AvatarImage src="https://placehold.co/40x40.png" alt="Company Logo" data-ai-hint="company logo"/>
                 <AvatarFallback>RM</AvatarFallback>
               </Avatar>
               <span className="sr-only">Toggle user menu</span>
