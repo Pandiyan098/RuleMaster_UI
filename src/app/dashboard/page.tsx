@@ -4,9 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import type { Rule } from "@/lib/definitions";
 import { RuleTable } from "@/components/dashboard/rule-table";
-import { Loader2, AlertCircle, RefreshCw } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 
 // The API response structure from your prompt
@@ -30,11 +28,9 @@ export default function DashboardPage() {
   const { toast } = useToast();
   const [rules, setRules] = useState<Rule[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
-    setError(null);
     // Use an environment variable for the API URL for better configuration.
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/rules`;
     try {
@@ -58,13 +54,26 @@ export default function DashboardPage() {
       setRules(transformedRules);
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
-      console.error("Failed to fetch rules:", e);
-      // Provide a more detailed error message to help with debugging.
-      setError(`Could not fetch rules from "${apiUrl}". Please ensure the API server is running and that it allows requests from this application (CORS). Error: ${errorMessage}`);
+      console.error(`Could not fetch rules from "${apiUrl}". Please ensure the API server is running and that it allows requests from this application (CORS). Error: ${errorMessage}`);
+      
+      toast({
+        variant: 'destructive',
+        title: 'API Connection Failed',
+        description: 'Could not connect to the rules API. Displaying mock data as a fallback.',
+        duration: 5000,
+      });
+
+      const mockRules: Rule[] = [
+        { id: 'MOCK1', name: 'Mock: VIP Customer Discount', description: 'Customer receives a 15% discount on all purchases.', status: 'active', createdAt: '2023-10-26T10:00:00.000Z' },
+        { id: 'MOCK2', name: 'Mock: Free Shipping', description: 'Orders over $50 qualify for free shipping.', status: 'inactive', createdAt: '2023-10-25T12:30:00.000Z' },
+        { id: 'MOCK3', name: 'Mock: High-Value Order Alert', description: 'Alerts staff when an order over $1000 is placed.', status: 'active', createdAt: '2023-10-24T15:45:00.000Z' },
+        { id: 'MOCK4', name: 'Mock: Content Moderation', description: 'Flags content containing forbidden keywords.', status: 'active', createdAt: '2023-10-23T09:20:00.000Z' },
+      ];
+      setRules(mockRules);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     fetchData();
@@ -95,24 +104,6 @@ export default function DashboardPage() {
       <div className="flex flex-1 items-center justify-center">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
       </div>
-    );
-  }
-
-  if (error) {
-    return (
-        <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error Fetching Data</AlertTitle>
-            <AlertDescription>
-              <div className="flex flex-col gap-4 mt-2">
-                <span>{error}</span>
-                <Button variant="secondary" className="self-start" onClick={fetchData}>
-                    <RefreshCw className="mr-2 h-4 w-4" />
-                    Try Again
-                </Button>
-              </div>
-            </AlertDescription>
-        </Alert>
     );
   }
 
