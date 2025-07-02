@@ -1,4 +1,6 @@
 import { Chatbot } from "@/components/dashboard/chatbot";
+import { CopilotSidebar } from "@copilotkit/react-ui";
+import { CopilotKit } from "@copilotkit/react-core";
 import {
   Card,
   CardContent,
@@ -32,7 +34,16 @@ export default function ExecutePage() {
            </div>
         </CardContent>
       </Card>
-      <Chatbot />
+      <CopilotKit>
+      <div className="p-8">
+        <h1>AI Assistant</h1>
+        <p>Ask a question using the assistant on the side.</p>
+      </div>
+
+      {/* ✅ Correct prop and component */}
+      <CopilotSidebar chatApiEndpoint="http://localhost:3001/api/copilot" />
+    </CopilotKit>
+
     </div>
   );
 }

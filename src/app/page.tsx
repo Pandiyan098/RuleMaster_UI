@@ -8,17 +8,29 @@ import { Bot, BookOpenCheck, Rocket, ChevronRight } from 'lucide-react';
 
 const features = [
   {
-    icon: <BookOpenCheck className="w-8 h-8 text-accent" />,
+    icon: (
+      <div className="bg-blue-100 rounded-full p-3 inline-block">
+        <BookOpenCheck className="w-8 h-8 text-blue-600" />
+      </div>
+    ),
     title: 'Advanced Rule Management',
     description: 'Easily define, manage, and apply custom business rules with a powerful and intuitive system.',
   },
   {
-    icon: <Rocket className="w-8 h-8 text-accent" />,
+    icon: (
+      <div className="bg-green-100 rounded-full p-3 inline-block">
+        <Rocket className="w-8 h-8 text-green-600" />
+      </div>
+    ),
     title: 'Increase Productivity',
     description: 'Automate complex decision-making processes to save time and reduce manual effort.',
   },
   {
-    icon: <Bot className="w-8 h-8 text-accent" />,
+    icon: (
+      <div className="bg-purple-100 rounded-full p-3 inline-block">
+        <Bot className="w-8 h-8 text-purple-600" />
+      </div>
+    ),
     title: 'Automate with AI',
     description: 'Leverage AI to clarify ambiguous logic and translate natural language into structured rules.',
   },
@@ -63,7 +75,7 @@ export default function Home() {
             <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-3">
               {features.map((feature, index) => (
                 <Card key={index} className="flex flex-col items-center text-center p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                  <div className="mb-4 p-3 bg-accent/10 rounded-full">{feature.icon}</div>
+                  <div className="mb-4">{feature.icon}</div>
                   <CardTitle className="font-headline text-xl mb-2">{feature.title}</CardTitle>
                   <p className="text-muted-foreground">{feature.description}</p>
                 </Card>
