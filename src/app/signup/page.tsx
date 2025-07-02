@@ -11,6 +11,7 @@ const managementAreas = [
     ),
     title: "Tenants",
     description: "Manage individual tenant configurations and data.",
+    href: "/signup/tenant",
   },
   {
     icon: (
@@ -20,6 +21,7 @@ const managementAreas = [
     ),
     title: "Clients",
     description: "Administer client-specific rules, settings, and data.",
+    href: "#",
   },
   {
     icon: (
@@ -29,6 +31,7 @@ const managementAreas = [
     ),
     title: "Users",
     description: "Manage individual user accounts & permissions.",
+    href: "#",
   },
   {
     icon: (
@@ -38,6 +41,7 @@ const managementAreas = [
     ),
     title: "Roles",
     description: "Define and assign access roles & hierarchies.",
+    href: "#",
   },
   {
     icon: (
@@ -47,6 +51,7 @@ const managementAreas = [
     ),
     title: "Groups",
     description: "Organize users into logical groups for bulk management.",
+    href: "#",
   },
 ];
 
@@ -65,7 +70,7 @@ export default function SignupPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {managementAreas.map((area) => (
-            <Link key={area.title} href="#" className="block group">
+            <Link key={area.title} href={area.href} className="block group">
               <Card className="h-full text-center group-hover:shadow-xl group-hover:border-primary transition-all duration-300">
                 <CardContent className="p-8 flex flex-col items-center gap-4">
                   {area.icon}
