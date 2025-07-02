@@ -9,13 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import styles from './page.module.css';
 
 export default function CreateTenantPage() {
   const [tenantName, setTenantName] = useState('');
   const [tenantDescription, setTenantDescription] = useState('');
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className={styles.pageWrapper}>
       <main className="container mx-auto py-12 px-4 md:px-6">
         <h1 className="text-3xl font-bold text-center mb-4">Tenant Management</h1>
         
